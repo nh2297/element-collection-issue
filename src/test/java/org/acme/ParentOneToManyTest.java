@@ -23,11 +23,29 @@ public class ParentOneToManyTest {
         UUID parentId = UUID.randomUUID();
         UUID childId = UUID.randomUUID();
 
-
         ChildToManyEntity child = new ChildToManyEntity(childId, parentId);
         ParentOneToMany parent = new ParentOneToMany(parentId, Set.of(child));
 
         startOneToManyRepository.save(parent);
+
+        Assertions.assertEquals(1, startOneToManyRepository.findAll().count());
+        ParentOneToMany result = startOneToManyRepository.findById(parentId).orElseThrow();
+
+
+        assert result.getChildToManyEntities().size() == 1;
+        assert result.getChildToManyEntities().contains(child);
+    }
+
+    @Test
+    @TestTransaction
+    void insert() {
+        UUID parentId = UUID.randomUUID();
+        UUID childId = UUID.randomUUID();
+
+        ChildToManyEntity child = new ChildToManyEntity(childId, parentId);
+        ParentOneToMany parent = new ParentOneToMany(parentId, Set.of(child));
+
+        startOneToManyRepository.insert(parent);
 
         Assertions.assertEquals(1, startOneToManyRepository.findAll().count());
         ParentOneToMany result = startOneToManyRepository.findById(parentId).orElseThrow();
