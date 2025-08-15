@@ -1,30 +1,33 @@
 package org.acme;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import jakarta.persistence.ManyToOne;
 import java.util.UUID;
 
 @Entity
-@Getter
 public class ChildToManyEntity {
 
     @Id
     private UUID id;
 
-    @Column(name = "parentId")
-    private UUID parentId;
+    @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
+    private ParentOneToMany parent;
 
     public ChildToManyEntity() {
         id = UUID.randomUUID();
     }
 
-    public ChildToManyEntity(UUID id, UUID parentId) {
+    public ChildToManyEntity(UUID id, ParentOneToMany parent) {
         this.id = id;
-        this.parentId = parentId;
+        this.parent = parent;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+    public ParentOneToMany getParent() {
+        return parent;
+    }
 }

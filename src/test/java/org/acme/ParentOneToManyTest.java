@@ -4,7 +4,6 @@ package org.acme;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.util.Set;
@@ -23,8 +22,11 @@ public class ParentOneToManyTest {
         UUID parentId = UUID.randomUUID();
         UUID childId = UUID.randomUUID();
 
-        ChildToManyEntity child = new ChildToManyEntity(childId, parentId);
-        ParentOneToMany parent = new ParentOneToMany(parentId, Set.of(child));
+        ParentOneToMany parent = new ParentOneToMany(parentId);
+
+        ChildToManyEntity child = new ChildToManyEntity(childId,parent);
+
+        parent.setChildToManyEntities(Set.of(child));
 
         startOneToManyRepository.save(parent);
 
@@ -42,8 +44,11 @@ public class ParentOneToManyTest {
         UUID parentId = UUID.randomUUID();
         UUID childId = UUID.randomUUID();
 
-        ChildToManyEntity child = new ChildToManyEntity(childId, parentId);
-        ParentOneToMany parent = new ParentOneToMany(parentId, Set.of(child));
+        ParentOneToMany parent = new ParentOneToMany(parentId);
+
+        ChildToManyEntity child = new ChildToManyEntity(childId,parent);
+
+        parent.setChildToManyEntities(Set.of(child));
 
         startOneToManyRepository.insert(parent);
 
